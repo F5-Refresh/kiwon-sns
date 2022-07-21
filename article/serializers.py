@@ -26,11 +26,13 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         fields = ['user','name','title','content','hashtag']
 
 
-class ArticlePatchSerializer(serializers.ModelSerializer):
+class ArticleRetrievePatchSerializer(serializers.ModelSerializer):
     """
-    게시글 수정,삭제 시리얼라이저
+    게시글 조회,수정,삭제 시리얼라이저
     """
+    name = serializers.ReadOnlyField(source="user.name")
+
     class Meta:
         model = Article
-        fields = ['title','content','hashtag','delete_flag']
-
+        fields = ['name','title','content','hashtag','like','view','delete_flag','created']
+        read_only_fields = ['like','view','delete_flag','created']
