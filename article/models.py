@@ -4,7 +4,7 @@ from core.models import AbstractTimeStamp
 
 
 class Article(AbstractTimeStamp):
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE,verbose_name='작성자')
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='작성자')
     title = models.CharField(max_length=300,blank=False)
     content = models.TextField(max_length=1000)
     hashtag = models.CharField(max_length=200)
@@ -13,7 +13,6 @@ class Article(AbstractTimeStamp):
     delete_flag = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-id']
         db_table = 'article'
 
     def delete_on(self):
