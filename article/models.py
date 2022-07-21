@@ -13,7 +13,6 @@ class Article(AbstractTimeStamp):
     delete_flag = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-id']
         db_table = 'article'
 
     def delete_on(self):
