@@ -10,9 +10,17 @@ class Article(AbstractTimeStamp):
     hashtag = models.CharField(max_length=200)
     like = models.PositiveIntegerField(default=0)
     view = models.PositiveIntegerField(default=0)
+    delete_flag = models.BooleanField(default=False)
 
     class Meta:
+        ordering = ['-id']
         db_table = 'article'
+
+    def delete_on(self):
+        self.delete_flag = not self.delete_flag
+        self.save()
+
 
     def __str__(self):
         return f'user:{self.user.name},title:{self.title}'
+
