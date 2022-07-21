@@ -1,4 +1,5 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager
 from django.db import models
 
 from core.models import AbstractTimeStamp
@@ -23,7 +24,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class User(AbstractUser,AbstractTimeStamp):
+class User(AbstractBaseUser,AbstractTimeStamp):
     email = models.EmailField(verbose_name="이메일",max_length=300,unique=True,blank=False)
     name = models.CharField(verbose_name="작성자",max_length=300,unique=True,blank=False)
 
