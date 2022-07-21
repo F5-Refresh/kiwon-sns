@@ -3,18 +3,21 @@ from rest_framework import serializers
 from article.models import Article
 
 
-# class ArticleListSerializer(serializers.ModelSerializer):
-#     email = serializers.ReadOnlyField(source="user.email")
-#
-#     class Meta:
-#         model = Article
-#         fields = ['email','title','hashtag','like','view']
-#
-
-
-class ArticleCreatePatchSerializer(serializers.ModelSerializer):
+class ArticleListSerializer(serializers.ModelSerializer):
     """
-    게시글 생성, 수정
+    게시글 목록 시리얼라이저
+    """
+    name = serializers.ReadOnlyField(source="user.name")
+
+    class Meta:
+        model = Article
+        fields = ['name','title','hashtag','like','view','delete_flag']
+
+
+
+class ArticleCreateSerializer(serializers.ModelSerializer):
+    """
+    게시글 생성 시리얼라이저
     """
     name = serializers.ReadOnlyField(source="user.name")
 
@@ -23,5 +26,11 @@ class ArticleCreatePatchSerializer(serializers.ModelSerializer):
         fields = ['user','name','title','content','hashtag']
 
 
-
+class ArticlePatchSerializer(serializers.ModelSerializer):
+    """
+    게시글 수정,삭제 시리얼라이저
+    """
+    class Meta:
+        model = Article
+        fields = ['title','content','hashtag','delete_flag']
 
