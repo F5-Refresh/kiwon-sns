@@ -79,14 +79,14 @@ class ArticleListAPIView(generics.ListAPIView):
     게시글 리스트를 조회합니다.
     """
     permission_classes = [AllowAny,]
-
-
     # 정렬
     queryset =  Article.objects.annotate(total_likes=Sum('likes'))
     serializer_class = ArticleListSerializer
-    filter_backends = [filters.OrderingFilter]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['created', 'total_likes', 'view']
     ordering = ['created']
 
+    # 검색
+    search_fields = ['title','hashtag']
 
 
