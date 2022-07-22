@@ -6,7 +6,8 @@ urlpatterns =[
     path('', ArticleAPIView.as_view(), name ='article'),
     path('<int:article_id>',ArticleAPIView.as_view(), name ='article'),
     path('<int:article_id>/delete_on', ArticleAPIView.patch_delete),
-    path('list',ArticleListAPIView.as_view())
+    path('list',ArticleListAPIView.as_view()),
+    path('<int:article_id>/like', ArticleAPIView.patch_likes),
 ]
 
 

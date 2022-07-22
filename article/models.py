@@ -1,6 +1,7 @@
 from django.db import models
 
 from core.models import AbstractTimeStamp
+from users.models import User
 
 
 class Article(AbstractTimeStamp):
@@ -8,7 +9,7 @@ class Article(AbstractTimeStamp):
     title = models.CharField(max_length=300,blank=False)
     content = models.TextField(max_length=1000)
     hashtag = models.CharField(max_length=200)
-    like = models.PositiveIntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
     view = models.PositiveIntegerField(default=0)
     delete_flag = models.BooleanField(default=False)
 
