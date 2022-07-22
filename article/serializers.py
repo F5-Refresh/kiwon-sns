@@ -39,8 +39,8 @@ class ArticleRetrievePatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['name','title','content','hashtag','likes','view','delete_flag','created']
-        read_only_fields = ['likes','view','delete_flag','created']
+        fields = ['name','title','content','hashtag','total_likes','view','delete_flag','created']
+        read_only_fields = ['total_likes','view','delete_flag','created']
 
     def get_total_likes(self,instance):
         return instance.likes.count()

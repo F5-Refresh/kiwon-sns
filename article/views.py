@@ -11,14 +11,15 @@ from article.serializers import ArticleCreateSerializer, ArticleListSerializer, 
 
 
 class ArticleAPIView(APIView):
-    @permission_classes([AllowAny])
+
     def get(self, request ,article_id):
         """
         게시글 상세페이지를 조회합니다.
         """
         article = get_object_or_404(Article, id=article_id)
         serializer = ArticleRetrievePatchSerializer(article)
-
+        article.view += 1
+        article.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -73,7 +74,40 @@ class ArticleAPIView(APIView):
             return Response({"detail":"좋아요가 취소되었습니다"}, status=status.HTTP_200_OK)
 
 
+    # @api_view(['PATCH'],)
+    # def count_views(request, article_id):
+    #     """
+    #     조회수를 증가시킵니다.
+    #     """
+    #     article = Article.objects.get(id=article_id)
+    #     article.views =+ 1
+    #     article.save()
+#
+# class ArticleDetailAPIView(APIView):
+#
+#     permission_classes = [AllowAny, ]
+#
+#     def get(self, request ,article_id):
+#         """
+#         게시글 상세페이지를 조회합니다.
+#         """
+#         article = get_object_or_404(Article, id=article_id)
+#         serializer = ArticleRetrievePatchSerializer(article)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#
+#     def post(self, request, article_id):
+#         """
+#         조회수를 증가시킵니다.
+#         """
+#         article = Article.objects.get(id=article_id)
+#         article.view += 1
+#         article.save()
+#         return
+
 class ArticleListAPIView(generics.ListAPIView):
+    """
+    게시글 리스트를 조회합니다.
+    """
     permission_classes = [AllowAny,]
 
     queryset = Article.objects.filter(delete_flag=False)
