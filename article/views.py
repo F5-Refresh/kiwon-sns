@@ -1,4 +1,3 @@
-
 from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
@@ -8,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import permission_classes
 
 from article.models import Article
-from article.serializers import ArticleCreateSerializer, ArticleListSerializer ,ArticleRetrievePatchSerializer
+from article.serializers import ArticleCreateSerializer, ArticleListSerializer, ArticleRetrievePatchSerializer
 
 
 class ArticleAPIView(APIView):
@@ -35,7 +34,6 @@ class ArticleAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
     def patch(self, request, article_id):
         """
         게시글을 수정합니다.
@@ -59,6 +57,21 @@ class ArticleAPIView(APIView):
         if article.delete_flag == True: message ="삭제"
         else: message = "복구"
         return Response({"detail":message},status=status.HTTP_200_OK)
+
+
+    @api_view(['PATCH'],)
+    def patch_likes(request,article_id):
+        """
+        좋아요를 누르거나 취소할 수 있습니다.
+        """
+        article = get_object_or_404(Article, id=article_id)
+        if not request.user in article.likes.all():
+            article.likes.add(request.user)
+            return Response({"detail":"좋아요를 눌렀습니다"}, status=status.HTTP_200_OK)
+        else:
+            article.likes.remove(request.user)
+            return Response({"detail":"좋아요가 취소되었습니다"}, status=status.HTTP_200_OK)
+
 
 class ArticleListAPIView(generics.ListAPIView):
     permission_classes = [AllowAny,]
