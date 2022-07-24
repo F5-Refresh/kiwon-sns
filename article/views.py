@@ -5,7 +5,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.db.models import Count, Q, Sum
+from django.db.models import Sum
 
 from article.models import Article
 from article.serializers import ArticleCreateSerializer, ArticleListSerializer, ArticleRetrievePatchSerializer
@@ -30,8 +30,11 @@ class ArticleAPIView(APIView):
         """
         data = {'user': request.user.id} | request.data
         serializer = ArticleCreateSerializer(data=data)
+
+
         if serializer.is_valid():
             serializer.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -79,14 +82,23 @@ class ArticleListAPIView(generics.ListAPIView):
     게시글 리스트를 조회합니다.
     """
     permission_classes = [AllowAny,]
-    # 정렬
-    queryset =  Article.objects.annotate(total_likes=Sum('likes'))
+    queryset = Article.objects.annotate(total_likes=Sum('likes'))
     serializer_class = ArticleListSerializer
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter, DjangoFilterBackend]
+
+    # 정렬
     ordering_fields = ['created', 'total_likes', 'view']
     ordering = ['created']
 
     # 검색
     search_fields = ['title','hashtag']
+
+    # 해시태그 필터링
+    filterset_fields = ['hashtags']
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.filter_queryset(self.get_queryset()).filter()
+
+
+
 
 
