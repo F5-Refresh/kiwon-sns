@@ -20,7 +20,7 @@ class ArticleListSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='user.name')
 
     total_likes = serializers.SerializerMethodField()
-    hashtags = serializers.ReadOnlyField(source='article.hashtags')
+    hashtags = HashtagsSerializer(many=True)
 
     class Meta:
         model = Article
@@ -52,10 +52,13 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
             if ht := Hashtag.objects.filter(hashtag=tag['hashtag']).first():
                 pass
             else:
-                ht = Hashtag.objects.create(hashtag=tag['hashtag'])
+                tag_data =tag['hashtag'][1:]
+                ht = Hashtag.objects.create(hashtag=tag_data)
+
                 ht.save()
             hts.append(ht)
         print(hts)          # [<Hashtag: #harry>, <Hashtag: #potter>]
+        print(hts )
         article.hashtags.set(hts)
         return article
 
@@ -66,6 +69,7 @@ class ArticleRetrievePatchSerializer(serializers.ModelSerializer):
     """
     name = serializers.ReadOnlyField(source="user.name")
     total_likes = serializers.SerializerMethodField()
+    hashtags = HashtagsSerializer(many=True)
 
     class Meta:
         model = Article

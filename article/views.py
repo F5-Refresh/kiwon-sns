@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Sum
 
+from article.filters import HashtagFilter
 from article.models import Article
 from article.serializers import ArticleCreateSerializer, ArticleListSerializer, ArticleRetrievePatchSerializer
 
@@ -30,8 +31,6 @@ class ArticleAPIView(APIView):
         """
         data = {'user': request.user.id} | request.data
         serializer = ArticleCreateSerializer(data=data)
-
-
         if serializer.is_valid():
             serializer.save()
 
@@ -91,14 +90,11 @@ class ArticleListAPIView(generics.ListAPIView):
     ordering = ['created']
 
     # 검색
-    search_fields = ['title','hashtag']
+    search_fields = ['title']
 
     # 해시태그 필터링
-    filterset_fields = ['hashtags']
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset()).filter()
-
-
+    filterset_class = HashtagFilter
+    lookup_url_kwarg = ['hashtags']
 
 
 

@@ -1,13 +1,35 @@
 import django_filters
 
 from article.models import Article
+from django_filters import rest_framework as filters
+
+
+
+class HashtagFilter(filters.FilterSet):
+    hashtags = django_filters.CharFilter(method='filter_hashtags')
+
+    def filter_hashtags(self, queryset, name, value):       # name = hashtags
+        lookup = '__'.join([name, 'hashtag'])    # name__hashtag -> hashtags__hashtag
+        return queryset.filter(**{lookup: value})
+
+    class Meta:
+        model = Article
+        fields = ['hashtags']
 
 
 
 
-# class HashtagFilter(django_filters.FilterSet):
-#     hashtag = django_filters.Filter(name='hashtag',lookup_type='#')
-#
-#     class Meta:
-#         model = Article
-#         fields = ('')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
