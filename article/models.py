@@ -1,3 +1,4 @@
+
 from django.db import models
 
 from core.models import AbstractTimeStamp
@@ -6,9 +7,9 @@ from users.models import User
 
 class Article(AbstractTimeStamp):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='작성자')
-    title = models.CharField(max_length=300,blank=False)
+    title = models.CharField(max_length=300, blank=False)
     content = models.TextField(max_length=1000)
-    hashtag = models.CharField(max_length=200)
+    hashtags = models.ManyToManyField('Hashtag', max_length=200, related_name='articles', blank=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
     view = models.PositiveIntegerField(default=0)
     delete_flag = models.BooleanField(default=False)
@@ -23,4 +24,14 @@ class Article(AbstractTimeStamp):
 
     def __str__(self):
         return f'user:{self.user.name},title:{self.title}'
+
+
+class Hashtag(models.Model):
+    hashtag = models.CharField(max_length=200, unique=True, blank=True)
+
+    def __str__(self):
+        return self.hashtag
+
+    class Meta:
+        db_table = 'hashtag'
 
