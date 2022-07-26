@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.models import update_last_login
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -8,25 +10,27 @@ from users.models import User
 
 
 class SignUpSerializer(ModelSerializer):
-    #회원가입
-
-# 입력받은 데이터를 검증
     def create(self, validated_data):
-        # create method를 따로 정해준 이유
+        password = validated_data.get('password')
+
+        # 비밀번호 8~15자/소문자,숫자 최소하나 사용
+        password_re = re.compile('^(?=.{8,15}$)(?=.*[a-z])(?=.*[0-9]).*$')
+
+        if not re.match(password_re, password):
+            raise serializers.ValidationError({"password": ["비밀번호는 8~15자의 영소문자와 숫자로 이루어져야 합니다."]})
+
         user = User.objects.create_user(**validated_data)
         return user
 
     class Meta:
         model = User
-        fields = ['email','name', 'password']       #수정햇슴
-        # password는 update,create할 때는 사용되지만, serializing할 때는 포함되지 않도록 하기
+        fields = ['email','name', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
 
 
 
 class SignInSerializer(TokenObtainPairSerializer):
-    # 로그인
 
     class Meta:
         model = User

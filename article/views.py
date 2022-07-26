@@ -17,6 +17,7 @@ class ArticleAPIView(APIView):
     def get(self, request ,article_id):
         """
         게시글 상세페이지를 조회합니다.
+        조회를 할 때마다 조회수는 1씩 증가합니다.
         """
         article = get_object_or_404(Article, id=article_id)
         serializer = ArticleRetrievePatchSerializer(article)
@@ -33,10 +34,8 @@ class ArticleAPIView(APIView):
         serializer = ArticleCreateSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def patch(self, request, article_id):
         """
@@ -62,7 +61,6 @@ class ArticleAPIView(APIView):
         else: message = "복구"
         return Response({"detail":message},status=status.HTTP_200_OK)
 
-
     @api_view(['PATCH'],)
     def patch_likes(request,article_id):
         """
@@ -75,6 +73,7 @@ class ArticleAPIView(APIView):
         else:
             article.likes.remove(request.user)
             return Response({"detail":"좋아요가 취소되었습니다"}, status=status.HTTP_200_OK)
+
 
 class ArticleListAPIView(generics.ListAPIView):
     """
@@ -94,7 +93,6 @@ class ArticleListAPIView(generics.ListAPIView):
 
     # 해시태그 필터링
     filterset_class = HashtagFilter
-    lookup_url_kwarg = ['hashtags']
 
 
 

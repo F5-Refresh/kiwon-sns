@@ -5,6 +5,9 @@ from article.models import Article, Hashtag
 
 
 class HashtagsSerializer(serializers.ModelSerializer):
+    """
+    해시태그 시리얼라이저
+    """
     hashtag = serializers.CharField()
 
     class Meta:
@@ -42,35 +45,21 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         fields = ['user','name','title','content','hashtags']
 
     def create(self, validated_data):
+        """
+        해시태그 생성
+        """
         hashtags_data = validated_data.pop('hashtags')
-        print(hashtags_data)        #[OrderedDict([('hashtag', '#harry')]), OrderedDict([('hashtag', '#potter')])]
         article = Article.objects.create(**validated_data)
-        print(article)  # user:ddd,title:Harry Potter and the Half-Blood Prince
-        print(article.hashtags)     #article.Hashtag.None
-        print(article.title)        #title출력
         hts = []
         for tag in hashtags_data:
-
-            # if ht := Hashtag.objects.filter(hashtag=tag['hashtag']):        # #potter
-            #     pass
             tag_data = tag['hashtag'][1:]
-            print(tag_data)
-            pip = Hashtag.objects.filter(hashtag=tag_data)      # db에서 filter로 hashtag 가져오기
-            print(pip)
 
-            ht = Hashtag.objects.filter(hashtag=tag_data).first()   # queryset으로 가져왔으니 first함수로 가장 첫번째 row만 조회
-            print(ht)
-
-
-            if ht:  # 값이 존재하면 True /False
+            if ht:= Hashtag.objects.filter(hashtag=tag_data).first():
                 pass
             else:
-                print(tag_data)                 # harry
                 ht = Hashtag.objects.create(hashtag=tag_data)
-                print(ht)
-                # ht.save()
+
             hts.append(ht)
-        print(hts)          # [<Hashtag: harry>, <Hashtag: potter>]
         article.hashtags.set(hts)
         return article
 

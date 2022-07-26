@@ -12,7 +12,6 @@ class SignUpView(APIView):
 
     def post(self, request):
         serializer = SignUpSerializer(data=request.data)
-        # 유효성을 확인, 저장
         if serializer.is_valid():
             serializer.save()
             return Response({'message': '회원가입이 완료 되었습니다.'}, status=status.HTTP_201_CREATED)
