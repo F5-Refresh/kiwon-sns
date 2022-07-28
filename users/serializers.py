@@ -17,7 +17,7 @@ class SignUpSerializer(ModelSerializer):
         password_re = re.compile('^(?=.{8,15}$)(?=.*[a-z])(?=.*[0-9]).*$')
 
         if not re.match(password_re, password):
-            raise serializers.ValidationError({"password": ["비밀번호는 8~15자의 영소문자와 숫자로 이루어져야 합니다."]})
+            raise serializers.ValidationError({'password': ["비밀번호는 8~15자의 영소문자와 숫자로 이루어져야 합니다."]})
 
         user = User.objects.create_user(**validated_data)
         return user
