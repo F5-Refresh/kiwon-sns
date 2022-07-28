@@ -41,9 +41,8 @@ class ArticleAPIView(APIView):
         """
         게시글을 수정합니다.
         """
-        data = {'user': request.user.id} | request.data
-        article = get_object_or_404(Article, id=article_id)
-        serializer = ArticleRetrievePatchSerializer(data=data, instance=article, partial=True)
+        article = get_object_or_404(Article, id=article_id, user=request.user.id)
+        serializer = ArticleRetrievePatchSerializer(data=request.data, instance=article, partial=True)
 
         if serializer.is_valid():
             serializer.save()

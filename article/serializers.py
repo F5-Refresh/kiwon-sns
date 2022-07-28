@@ -75,7 +75,30 @@ class ArticleRetrievePatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['name','title','content','hashtags','total_likes','view','delete_flag','created']
-        read_only_fields = ['total_likes','view','delete_flag','created']
+        # read_only_fields = ['total_likes','view','delete_flag','created']
+
 
     def get_total_likes(self,instance):
         return instance.likes.count()
+
+    def update(self, article, validated_data):
+        # print(article)             # user:user,title:update check, hashtags:<QuerySet [<Hashtag: bts>, <Hashtag: mee>]>
+        article.title = validated_data.get('title', article.title)
+        article.content = validated_data.get('content', article.content)
+        article.save()
+
+        hashtags_data = validated_data.pop('hashtags')
+        hts = []
+        for tag in hashtags_data:
+            tag_data = tag['hashtag'][1:]
+
+            if ht := Hashtag.objects.filter(hashtag=tag_data).first():
+                pass
+            else:
+                ht = Hashtag.objects.create(hashtag=tag_data)
+            hts.append(ht)
+
+        article.hashtags.clear()
+        article.hashtags.set(hts)
+        return article
+

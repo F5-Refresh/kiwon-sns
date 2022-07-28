@@ -23,7 +23,7 @@ class Article(AbstractTimeStamp):
 
 
     def __str__(self):
-        return f'user:{self.user.name},title:{self.title}'
+        return f'user:{self.user.name},title:{self.title}, hashtags:{self.hashtags.all()}'
 
 
 class Hashtag(models.Model):
