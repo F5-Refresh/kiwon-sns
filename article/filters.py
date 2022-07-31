@@ -11,8 +11,8 @@ class HashtagFilter(filters.FilterSet):
     """
     hashtags = django_filters.CharFilter(method='filter_hashtags')
 
-    def filter_hashtags(self, queryset, name, value):       # name = hashtags
-        lookup = '__'.join([name, 'hashtag'])               # name__hashtag -> hashtags__hashtag
+    def filter_hashtags(self, queryset, name, value):       
+        lookup = '__'.join([name, 'hashtag'])               
         return queryset.filter(**{lookup: value})
 
     class Meta:
