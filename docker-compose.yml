@@ -19,7 +19,7 @@ services:
     volumes:
       - .:/home/sns
     depends_on:
-      - web
+      - db
 
   db:
     image: mysql:5.7
@@ -45,7 +45,7 @@ services:
     restart: always
     volumes:
       - ./conf:/etc/nginx/conf.d
-      - ./static:/static
+      - ./static:/etc/nginx/static
     ports:
       - "80:80"
     depends_on:
