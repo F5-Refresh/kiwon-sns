@@ -258,3 +258,5 @@ cython_debug/
 .idea
 .github
 .github/ISSUE_TEMPLATE/issue-template.md
+
+static/
