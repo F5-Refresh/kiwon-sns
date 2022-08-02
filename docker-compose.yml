@@ -45,7 +45,7 @@ services:
     restart: always
     volumes:
       - ./conf:/etc/nginx/conf.d
-      - ./static:/etc/nginx/static
+      - ./static:/static
     ports:
       - "80:80"
     depends_on:
