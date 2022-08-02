@@ -7,7 +7,6 @@
 > 개발기간 : 7.20 ~ 7.27  
 
 > 고도화예정 ~   
-* ec2 도커 배포
 * 게시물 테스트 코드 작성
 * transaction
 
@@ -25,8 +24,15 @@
 <br/>
 
 # 🔨 Stack
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"> <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white"> <img src="https://img.shields.io/badge/DJANGO_REST_Framework-ff1709?style=for-the-badge&logo=Django&logoColor=white">
-
+<img src="https://img.shields.io/badge/Python-3766AB?style=flat-square&logo=Python&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Django-092E20?style=flat-square&logo=Django&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Django_REST_framework-ff1709?style=flat-square&logo=Django&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=Amazon%20AWS&logoColor=white">
+<img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white">
+<img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=NGINX&logoColor=white">
+<img src="https://img.shields.io/badge/Gunicorn-499848?style=flat-square&logo=Gunicorn&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white">
+<img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=SQLite&logoColor=white">
 
 <br/>
 
@@ -65,7 +71,7 @@
 
 > ## 2. 로그인
 * ```JWT 인증방식``` 로그인을 구현하였습니다. (Simple JWT사용)
-* 로그아웃은 프론트에서 처리합니다.
+* 로그아웃은 프론트에서 처리합니다.  
 
 </br>
 
@@ -165,11 +171,76 @@ default값은 10건입니다.
 # 🚩 테스트  
 * 회원가입 테스트 : 4개  
 * 로그인 테스트 : 3개  
-* 게시글 테스트 : 추가 예정  
+* 게시글 테스트 : 3개~ 추가 예정  
 
 <br/>
 
 # 🛫배포
+<br/>
+
+```nginx```와 ```gunicorn```을 이용하여 ```aws ec2```서버에서 django 프로젝트를 배포하였습니다.  
+db는 로컬에서 개발할 땐 sqlite를 사용하고, 배포할 때는 ```mysql```을 사용하였습니다.  
+
+<br/>
+
+아래에 해당 서버에 접속하여 postman과 웹에서 테스트한 것을 첨부하겠습니다.    
+지금은 비용 문제로 서버를 중단했습니다.     
+
+<br/> 
+
+<details>
+<summary>로그인</summary>
+<div markdown="1">
+
+![image](https://user-images.githubusercontent.com/87809367/182327941-929b7c3f-6905-47b1-bd42-daf9e729a84b.png)
+
+</div>
+</details>
+
+
+<details>
+<summary>게시글 생성</summary>
+<div markdown="1">
+
+![image](https://user-images.githubusercontent.com/87809367/182330695-f057bd8b-9b87-49c8-8ac9-7ffde32ec423.png)
+
+
+</div>
+</details>
+
+<details>
+<summary>게시글 리스트 & 필터링</summary>
+<div markdown="1">
+
+<br/>
+
+> 해시태그 키워드 cat을 검색하여 조회수 내림차순으로 정렬한 모습입니다.  
+
+<br/>
+
+![image](https://user-images.githubusercontent.com/87809367/182334343-af08b3a3-b859-4ae5-8d04-6caff23df183.png)
+
+<br/>
+
+> 필터링은 아래와 같이 볼 수 있습니다.  
+
+![image](https://user-images.githubusercontent.com/87809367/182334628-f8e48ead-be5e-4475-a578-bb24933e4363.png)
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
