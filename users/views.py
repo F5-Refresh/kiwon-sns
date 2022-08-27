@@ -28,3 +28,4 @@ class SignInView(APIView):
             token = serializer.validated_data
             return Response(token,status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
