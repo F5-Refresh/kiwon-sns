@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
     def create_user(self,email,name,password=None):
         if not email:
             raise ValueError("The given email must be set")
-        email =self.normalize_email(email)
+        email = self.normalize_email(email)
         user = self.model(email=email,name=name)
         user.set_password(password)
         user.save(using=self._db)
@@ -18,8 +18,9 @@ class UserManager(BaseUserManager):
 # 관리자 유저
     def create_superuser(self,email,name, password):
         user = self.create_user(
-            email, password=password, name =name
+            email, password=password, name=name
         )
+        user.is_superuser = True
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -27,7 +28,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser,AbstractTimeStamp):
     email = models.EmailField(verbose_name="이메일",max_length=300,unique=True,blank=False)
     name = models.CharField(verbose_name="작성자",max_length=300,unique=True,blank=False)
-
+    is_admin = models.BooleanField(default=False)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -38,7 +39,7 @@ class User(AbstractBaseUser,AbstractTimeStamp):
         return f"{self.pk},{self.email}, {self.name}"
 
     # 권한 설정
-    def has_perms(self, perm_list, obj=None):
+    def has_perm(self, perm, obj=None):
         return True
 
     # app, model 접근가능
