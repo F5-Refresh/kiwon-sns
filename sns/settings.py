@@ -115,6 +115,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sns.wsgi.application'
 
+# 레디스 캐시설정
+# https://github.com/jazzband/django-redis
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -129,13 +141,13 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('MYSQL_DATABASE'),
-        'USER': 'root',
-        'PASSWORD': env('MYSQL_ROOT_PASSWORD'),
-        'HOST': 'db',
-        'PORT': env('MYSQL_TCP_PORT')
+        'NAME': env('RDS_MYSQL_DATABASE'),
+        'USER': env('RDS_MYSQL_USER'),
+        'PASSWORD': env('RDS_MYSQL_PASSWORD'),
+        'HOST': env('RDS_END_POINT'),
+        'PORT': env('RDS_MYSQL_TCP_PORT')
     }
-    
+
 }
 
 
